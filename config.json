@@ -1,0 +1,50 @@
+{
+    "sites": [
+        {
+            "identifier": "encuentra24",
+            "config": "./sites/encuentra24/config.json",
+            "baseUrl": "https://www.encuentra24.com/",
+            "max_items": 6000,
+            "items_per_page": 15,
+            "usd_conversion_rate": 55,
+            "defaults": [
+                "localizacion:none:true",
+                "marca:none:true",
+                "modelo:none:true",
+                "fecha_publicacion:none:true",
+                "precio:none:true",
+                "year:none:true",
+                "km:none:true",
+                "transmision:none:true",
+                "combustible:none:true",
+                "vendedor:none:true",
+                "phone:none:true",
+                "uid:none:true",
+                "financiamiento:none:true"
+            ]
+        },
+        {
+            "identifier": "encuentra24_crs",
+            "config": "./sites/encuentra24/config.json",
+            "baseUrl": "https://www.encuentra24.com/",
+            "max_items": 30,
+            "items_per_page": 15,
+            "usd_conversion_rate": 55,
+            "defaults": [
+                "localizacion:none:true",
+                "marca:none:true",
+                "modelo:none:true",
+                "fecha_publicacion:none:true",
+                "precio:none:true",
+                "year:none:true",
+                "km:none:true",
+                "transmision:none:true",
+                "combustible:none:true",
+                "vendedor:none:true",
+                "phone:none:true",
+                "uid:none:true",
+                "financiamiento:none:true"
+            ]
+        }
+    ]
+}
