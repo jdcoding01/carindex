@@ -20,14 +20,6 @@ class Encuentra24Interface:
         self.config = config
         self.usd_conversion_rate = usd_conversion_rate
 
-    # Writes scrape results in Excel file
-
-    def write_results(self, results):
-        ExcelGenerator(
-            results, "./reports/encuentra24/encuentra24-{}.xlsx".format(
-                date.today())
-        ).generate()
-
     # Find all items on each page, based on max_items provided
     def read_items_by_page(self):
         results_body = []
@@ -62,8 +54,6 @@ class Encuentra24Interface:
                     print('\r' + "[Encuentra24]: " + str(round(parsed_items/self.max_items*100, 1)) + '% complete' +
                           " ({}/{}) items captured.".format(parsed_items, self.max_items), end='')
                 if parsed_items == self.max_items:
-                    # print(results_body)
-                    self.write_results(results_body)
                     break
             current_page += 1
 
@@ -127,8 +117,6 @@ class Encuentra24Interface:
             vendedor = str(user_info.find(
                 "span", {"class": "user-name"})).split("\">")[1].split("</span>")[0]
 
-            # phone = str(contact.find("span", {"class": "cellphone"})).split(
-            #     "<div class=\"see-phone\"")[0].split("mobile\">")[1]
             phone = ""
 
 
@@ -155,7 +143,7 @@ class Encuentra24Interface:
             "phone": phone,
             "uid": uid,
             "financiamiento": str(financiamiento),
-            "module": "encuentra24-pa"
+            "module": "encuentra24-pa",
         }
 
         for param in self.config:
@@ -164,33 +152,5 @@ class Encuentra24Interface:
                             ] = param_value_getter[param["identifier"]]
 
         laraIndex(param_value_getter)
-        # self.record_availability(uid, marca, modelo, year, precio)
         return result_body
 
-    # Record item availability. Saves item url path and timestamp on sqlite
-    def record_availability(self, uid, marca, modelo, year, precio):
-        DatabaseManager("encuentra24").insert_data(
-            uid, marca, modelo, year, date.today(), precio)
-        return
-
-    def check_availability(self):
-        url = self.url
-
-        items = DatabaseManager("supercasas").select_all_items()
-        for item in items:
-            path = item[1]
-
-            item_url = "{}{}".format(url, path)
-
-            source = requests.get(url=item_url)
-
-            soup = bs.BeautifulSoup(source.text, "html.parser")
-
-            if soup.find("div", {"class": "error-title"}) is not None:
-                print("not available... writing")
-                DatabaseManager("supercasas").update_item(path)
-            else:
-                print("still avaiable")
-                continue
-
-        return
